@@ -1,0 +1,7 @@
+class: Note
+table: tb_note
+fields:
+  title: String
+  content: String
+  created: DateTime
+  updated: DateTime
