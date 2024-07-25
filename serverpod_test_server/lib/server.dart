@@ -28,6 +28,12 @@ void run(List<String> args) async {
           'Sending password reset email to ${userInfo.email} with code $validationCode');
       return true;
     },
+    onUserCreated: (session, userInfo) async {
+      await User.db.insertRow(
+        session,
+        User(userInfo: userInfo, userInfoId: userInfo.id!),
+      );
+    },
   ));
   // If you are using any future calls, they need to be registered here.
   // pod.registerFutureCall(ExampleFutureCall(), 'exampleFutureCall');

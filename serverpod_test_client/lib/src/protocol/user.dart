@@ -10,18 +10,21 @@
 // ignore_for_file: no_leading_underscores_for_library_prefixes
 import 'package:serverpod_client/serverpod_client.dart' as _i1;
 import 'package:serverpod_auth_client/serverpod_auth_client.dart' as _i2;
+import 'protocol.dart' as _i3;
 
 abstract class User implements _i1.SerializableModel {
   User._({
     this.id,
     required this.userInfoId,
     this.userInfo,
+    this.notes,
   });
 
   factory User({
     int? id,
     required int userInfoId,
     _i2.UserInfo? userInfo,
+    List<_i3.Note>? notes,
   }) = _UserImpl;
 
   factory User.fromJson(Map<String, dynamic> jsonSerialization) {
@@ -32,6 +35,9 @@ abstract class User implements _i1.SerializableModel {
           ? null
           : _i2.UserInfo.fromJson(
               (jsonSerialization['userInfo'] as Map<String, dynamic>)),
+      notes: (jsonSerialization['notes'] as List?)
+          ?.map((e) => _i3.Note.fromJson((e as Map<String, dynamic>)))
+          .toList(),
     );
   }
 
@@ -44,10 +50,13 @@ abstract class User implements _i1.SerializableModel {
 
   _i2.UserInfo? userInfo;
 
+  List<_i3.Note>? notes;
+
   User copyWith({
     int? id,
     int? userInfoId,
     _i2.UserInfo? userInfo,
+    List<_i3.Note>? notes,
   });
   @override
   Map<String, dynamic> toJson() {
@@ -55,6 +64,7 @@ abstract class User implements _i1.SerializableModel {
       if (id != null) 'id': id,
       'userInfoId': userInfoId,
       if (userInfo != null) 'userInfo': userInfo?.toJson(),
+      if (notes != null) 'notes': notes?.toJson(valueToJson: (v) => v.toJson()),
     };
   }
 
@@ -71,10 +81,12 @@ class _UserImpl extends User {
     int? id,
     required int userInfoId,
     _i2.UserInfo? userInfo,
+    List<_i3.Note>? notes,
   }) : super._(
           id: id,
           userInfoId: userInfoId,
           userInfo: userInfo,
+          notes: notes,
         );
 
   @override
@@ -82,12 +94,14 @@ class _UserImpl extends User {
     Object? id = _Undefined,
     int? userInfoId,
     Object? userInfo = _Undefined,
+    Object? notes = _Undefined,
   }) {
     return User(
       id: id is int? ? id : this.id,
       userInfoId: userInfoId ?? this.userInfoId,
       userInfo:
           userInfo is _i2.UserInfo? ? userInfo : this.userInfo?.copyWith(),
+      notes: notes is List<_i3.Note>? ? notes : this.notes?.clone(),
     );
   }
 }
