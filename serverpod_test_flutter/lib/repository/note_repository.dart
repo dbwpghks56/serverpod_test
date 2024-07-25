@@ -1,6 +1,6 @@
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:serverpod_test_client/serverpod_test_client.dart';
-import 'package:serverpod_test_flutter/main.dart';
+import 'package:serverpod_test_flutter/serverpod_client.dart';
 import 'package:serverpod_test_flutter/service/note_service.dart';
 
 part 'note_repository.g.dart';
