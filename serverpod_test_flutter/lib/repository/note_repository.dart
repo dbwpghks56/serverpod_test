@@ -14,6 +14,7 @@ Future<List<Note>> getAllNoteRepository(
   final noteRiverpod = ref.read(noteServiceProvider.notifier);
 
   for (final note in noteCollection) {
+    note.id = note.id;
     noteList.add(note);
     noteRiverpod.addNote(note);
   }
@@ -35,6 +36,24 @@ Future<void> createNoteRepository(
       .then(
     (value) {
       noteRiverpod.addNote(note);
+    },
+  );
+}
+
+@riverpod
+Future<void> deleteNoteRepository(
+  DeleteNoteRepositoryRef ref,
+  Note note,
+) async {
+  final noteRiverpod = ref.read(noteServiceProvider.notifier);
+
+  await client.note
+      .deleteNote(
+    note,
+  )
+      .then(
+    (value) {
+      noteRiverpod.deleteNote(note);
     },
   );
 }

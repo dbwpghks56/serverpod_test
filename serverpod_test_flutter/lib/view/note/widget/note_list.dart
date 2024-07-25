@@ -19,9 +19,15 @@ class NoteList extends HookConsumerWidget {
       itemCount: notes.length,
       itemBuilder: (context, index) {
         return ListTile(
-          title: Text(notes[index].title),
-          subtitle: Text(notes[index].content),
-        );
+            title: Text(notes[index].title),
+            subtitle: Text(notes[index].content),
+            trailing: IconButton(
+              color: Colors.red[200],
+              icon: const Icon(Icons.delete),
+              onPressed: () {
+                ref.read(deleteNoteRepositoryProvider(notes[index]));
+              },
+            ));
       },
     );
   }
