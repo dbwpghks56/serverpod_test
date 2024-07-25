@@ -20,3 +20,21 @@ Future<List<Note>> getAllNoteRepository(
 
   return noteList;
 }
+
+@riverpod
+Future<void> createNoteRepository(
+  CreateNoteRepositoryRef ref,
+  Note note,
+) async {
+  final noteRiverpod = ref.read(noteServiceProvider.notifier);
+
+  await client.note
+      .createNote(
+    note,
+  )
+      .then(
+    (value) {
+      noteRiverpod.addNote(note);
+    },
+  );
+}
