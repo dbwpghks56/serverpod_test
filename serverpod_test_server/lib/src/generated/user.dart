@@ -184,7 +184,7 @@ class UserTable extends _i1.Table {
     ___notes = _i1.createRelationTable(
       relationFieldName: '__notes',
       field: User.t.id,
-      foreignField: _i3.Note.t.$_tbUserNotesTbUserId,
+      foreignField: _i3.Note.t.userId,
       tableRelation: tableRelation,
       createTable: (foreignTableRelation) =>
           _i3.NoteTable(tableRelation: foreignTableRelation),
@@ -197,7 +197,7 @@ class UserTable extends _i1.Table {
     var relationTable = _i1.createRelationTable(
       relationFieldName: 'notes',
       field: User.t.id,
-      foreignField: _i3.Note.t.$_tbUserNotesTbUserId,
+      foreignField: _i3.Note.t.userId,
       tableRelation: tableRelation,
       createTable: (foreignTableRelation) =>
           _i3.NoteTable(tableRelation: foreignTableRelation),
@@ -449,15 +449,10 @@ class UserAttachRepository {
       throw ArgumentError.notNull('user.id');
     }
 
-    var $note = note
-        .map((e) => _i3.NoteImplicit(
-              e,
-              $_tbUserNotesTbUserId: user.id,
-            ))
-        .toList();
+    var $note = note.map((e) => e.copyWith(userId: user.id)).toList();
     await session.db.update<_i3.Note>(
       $note,
-      columns: [_i3.Note.t.$_tbUserNotesTbUserId],
+      columns: [_i3.Note.t.userId],
     );
   }
 }
@@ -496,13 +491,10 @@ class UserAttachRowRepository {
       throw ArgumentError.notNull('user.id');
     }
 
-    var $note = _i3.NoteImplicit(
-      note,
-      $_tbUserNotesTbUserId: user.id,
-    );
+    var $note = note.copyWith(userId: user.id);
     await session.db.updateRow<_i3.Note>(
       $note,
-      columns: [_i3.Note.t.$_tbUserNotesTbUserId],
+      columns: [_i3.Note.t.userId],
     );
   }
 }
@@ -518,15 +510,10 @@ class UserDetachRepository {
       throw ArgumentError.notNull('note.id');
     }
 
-    var $note = note
-        .map((e) => _i3.NoteImplicit(
-              e,
-              $_tbUserNotesTbUserId: null,
-            ))
-        .toList();
+    var $note = note.map((e) => e.copyWith(userId: null)).toList();
     await session.db.update<_i3.Note>(
       $note,
-      columns: [_i3.Note.t.$_tbUserNotesTbUserId],
+      columns: [_i3.Note.t.userId],
     );
   }
 }
@@ -542,13 +529,10 @@ class UserDetachRowRepository {
       throw ArgumentError.notNull('note.id');
     }
 
-    var $note = _i3.NoteImplicit(
-      note,
-      $_tbUserNotesTbUserId: null,
-    );
+    var $note = note.copyWith(userId: null);
     await session.db.updateRow<_i3.Note>(
       $note,
-      columns: [_i3.Note.t.$_tbUserNotesTbUserId],
+      columns: [_i3.Note.t.userId],
     );
   }
 }

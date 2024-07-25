@@ -113,12 +113,6 @@ class Protocol extends _i1.SerializationManagerServer {
         _i2.ColumnDefinition(
           name: 'userId',
           columnType: _i2.ColumnType.bigint,
-          isNullable: false,
-          dartType: 'int',
-        ),
-        _i2.ColumnDefinition(
-          name: '_tbUserNotesTbUserId',
-          columnType: _i2.ColumnType.bigint,
           isNullable: true,
           dartType: 'int?',
         ),
@@ -133,17 +127,7 @@ class Protocol extends _i1.SerializationManagerServer {
           onUpdate: _i2.ForeignKeyAction.noAction,
           onDelete: _i2.ForeignKeyAction.noAction,
           matchType: null,
-        ),
-        _i2.ForeignKeyDefinition(
-          constraintName: 'tb_note_fk_1',
-          columns: ['_tbUserNotesTbUserId'],
-          referenceTable: 'tb_user',
-          referenceTableSchema: 'public',
-          referenceColumns: ['id'],
-          onUpdate: _i2.ForeignKeyAction.noAction,
-          onDelete: _i2.ForeignKeyAction.noAction,
-          matchType: null,
-        ),
+        )
       ],
       indexes: [
         _i2.IndexDefinition(
