@@ -18,6 +18,17 @@ void run(List<String> args) async {
     authenticationHandler: auth.authenticationHandler,
   );
 
+  auth.AuthConfig.set(auth.AuthConfig(
+    sendValidationEmail: (session, email, validationCode) async {
+      print('Sending validation email to $email with code $validationCode');
+      return true;
+    },
+    sendPasswordResetEmail: (session, userInfo, validationCode) async {
+      print(
+          'Sending password reset email to ${userInfo.email} with code $validationCode');
+      return true;
+    },
+  ));
   // If you are using any future calls, they need to be registered here.
   // pod.registerFutureCall(ExampleFutureCall(), 'exampleFutureCall');
 

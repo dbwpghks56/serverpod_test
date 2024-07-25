@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:serverpod_test_flutter/serverpod_client.dart';
-import 'package:serverpod_test_flutter/view/note/note_view.dart';
+import 'package:serverpod_test_flutter/view/auth/auth_view.dart';
 
 // Sets up a singleton client object that can be used to talk to the server from
 // anywhere in our app. The client is generated from your server code.
@@ -28,7 +28,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         colorSchemeSeed: Colors.amber,
       ),
-      home: const NoteView(),
+      home: const AuthView(),
     );
   }
 }
