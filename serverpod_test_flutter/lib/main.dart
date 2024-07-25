@@ -33,7 +33,6 @@ class MyApp extends HookWidget {
 
     useEffect(
       () {
-        print(isLogin.value);
         return null;
       },
       [isLogin.value],

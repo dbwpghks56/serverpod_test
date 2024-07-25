@@ -14,7 +14,7 @@ class NoteEndpoint extends Endpoint {
   Future<List<Note>> getAllNotes(Session session) async {
     return await Note.db.find(
       session,
-      orderBy: (note) => note.id,
+      orderBy: (note) => note.created,
     );
   }
 }

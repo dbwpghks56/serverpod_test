@@ -14,9 +14,11 @@ import 'package:serverpod/protocol.dart' as _i2;
 import 'package:serverpod_auth_server/serverpod_auth_server.dart' as _i3;
 import 'example.dart' as _i4;
 import 'note.dart' as _i5;
-import 'package:serverpod_test_server/src/generated/note.dart' as _i6;
+import 'user.dart' as _i6;
+import 'package:serverpod_test_server/src/generated/note.dart' as _i7;
 export 'example.dart';
 export 'note.dart';
+export 'user.dart';
 
 class Protocol extends _i1.SerializationManagerServer {
   Protocol._();
@@ -126,6 +128,68 @@ class Protocol extends _i1.SerializationManagerServer {
       ],
       managed: true,
     ),
+    _i2.TableDefinition(
+      name: 'tb_user',
+      dartName: 'User',
+      schema: 'public',
+      module: 'serverpod_test',
+      columns: [
+        _i2.ColumnDefinition(
+          name: 'id',
+          columnType: _i2.ColumnType.bigint,
+          isNullable: false,
+          dartType: 'int?',
+          columnDefault: 'nextval(\'tb_user_id_seq\'::regclass)',
+        ),
+        _i2.ColumnDefinition(
+          name: 'userInfoId',
+          columnType: _i2.ColumnType.bigint,
+          isNullable: false,
+          dartType: 'int',
+        ),
+      ],
+      foreignKeys: [
+        _i2.ForeignKeyDefinition(
+          constraintName: 'tb_user_fk_0',
+          columns: ['userInfoId'],
+          referenceTable: 'serverpod_user_info',
+          referenceTableSchema: 'public',
+          referenceColumns: ['id'],
+          onUpdate: _i2.ForeignKeyAction.noAction,
+          onDelete: _i2.ForeignKeyAction.noAction,
+          matchType: null,
+        )
+      ],
+      indexes: [
+        _i2.IndexDefinition(
+          indexName: 'tb_user_pkey',
+          tableSpace: null,
+          elements: [
+            _i2.IndexElementDefinition(
+              type: _i2.IndexElementDefinitionType.column,
+              definition: 'id',
+            )
+          ],
+          type: 'btree',
+          isUnique: true,
+          isPrimary: true,
+        ),
+        _i2.IndexDefinition(
+          indexName: 'user_info_id_unique_idx',
+          tableSpace: null,
+          elements: [
+            _i2.IndexElementDefinition(
+              type: _i2.IndexElementDefinitionType.column,
+              definition: 'userInfoId',
+            )
+          ],
+          type: 'btree',
+          isUnique: true,
+          isPrimary: false,
+        ),
+      ],
+      managed: true,
+    ),
     ..._i3.Protocol.targetTableDefinitions,
     ..._i2.Protocol.targetTableDefinitions,
   ];
@@ -142,14 +206,20 @@ class Protocol extends _i1.SerializationManagerServer {
     if (t == _i5.Note) {
       return _i5.Note.fromJson(data) as T;
     }
+    if (t == _i6.User) {
+      return _i6.User.fromJson(data) as T;
+    }
     if (t == _i1.getType<_i4.Example?>()) {
       return (data != null ? _i4.Example.fromJson(data) : null) as T;
     }
     if (t == _i1.getType<_i5.Note?>()) {
       return (data != null ? _i5.Note.fromJson(data) : null) as T;
     }
-    if (t == List<_i6.Note>) {
-      return (data as List).map((e) => deserialize<_i6.Note>(e)).toList()
+    if (t == _i1.getType<_i6.User?>()) {
+      return (data != null ? _i6.User.fromJson(data) : null) as T;
+    }
+    if (t == List<_i7.Note>) {
+      return (data as List).map((e) => deserialize<_i7.Note>(e)).toList()
           as dynamic;
     }
     try {
@@ -174,6 +244,9 @@ class Protocol extends _i1.SerializationManagerServer {
     if (data is _i5.Note) {
       return 'Note';
     }
+    if (data is _i6.User) {
+      return 'User';
+    }
     return super.getClassNameForObject(data);
   }
 
@@ -188,6 +261,9 @@ class Protocol extends _i1.SerializationManagerServer {
     }
     if (data['className'] == 'Note') {
       return deserialize<_i5.Note>(data['data']);
+    }
+    if (data['className'] == 'User') {
+      return deserialize<_i6.User>(data['data']);
     }
     return super.deserializeByClassName(data);
   }
@@ -211,6 +287,8 @@ class Protocol extends _i1.SerializationManagerServer {
         return _i4.Example.t;
       case _i5.Note:
         return _i5.Note.t;
+      case _i6.User:
+        return _i6.User.t;
     }
     return null;
   }
