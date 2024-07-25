@@ -15,7 +15,8 @@ import 'package:serverpod_auth_server/serverpod_auth_server.dart' as _i3;
 import 'example.dart' as _i4;
 import 'note.dart' as _i5;
 import 'user.dart' as _i6;
-import 'package:serverpod_test_server/src/generated/note.dart' as _i7;
+import 'protocol.dart' as _i7;
+import 'package:serverpod_test_server/src/generated/note.dart' as _i8;
 export 'example.dart';
 export 'note.dart';
 export 'user.dart';
@@ -109,8 +110,41 @@ class Protocol extends _i1.SerializationManagerServer {
           isNullable: false,
           dartType: 'DateTime',
         ),
+        _i2.ColumnDefinition(
+          name: 'userId',
+          columnType: _i2.ColumnType.bigint,
+          isNullable: false,
+          dartType: 'int',
+        ),
+        _i2.ColumnDefinition(
+          name: '_tbUserNotesTbUserId',
+          columnType: _i2.ColumnType.bigint,
+          isNullable: true,
+          dartType: 'int?',
+        ),
       ],
-      foreignKeys: [],
+      foreignKeys: [
+        _i2.ForeignKeyDefinition(
+          constraintName: 'tb_note_fk_0',
+          columns: ['userId'],
+          referenceTable: 'tb_user',
+          referenceTableSchema: 'public',
+          referenceColumns: ['id'],
+          onUpdate: _i2.ForeignKeyAction.noAction,
+          onDelete: _i2.ForeignKeyAction.noAction,
+          matchType: null,
+        ),
+        _i2.ForeignKeyDefinition(
+          constraintName: 'tb_note_fk_1',
+          columns: ['_tbUserNotesTbUserId'],
+          referenceTable: 'tb_user',
+          referenceTableSchema: 'public',
+          referenceColumns: ['id'],
+          onUpdate: _i2.ForeignKeyAction.noAction,
+          onDelete: _i2.ForeignKeyAction.noAction,
+          matchType: null,
+        ),
+      ],
       indexes: [
         _i2.IndexDefinition(
           indexName: 'tb_note_pkey',
@@ -218,8 +252,13 @@ class Protocol extends _i1.SerializationManagerServer {
     if (t == _i1.getType<_i6.User?>()) {
       return (data != null ? _i6.User.fromJson(data) : null) as T;
     }
-    if (t == List<_i7.Note>) {
-      return (data as List).map((e) => deserialize<_i7.Note>(e)).toList()
+    if (t == _i1.getType<List<_i7.Note>?>()) {
+      return (data != null
+          ? (data as List).map((e) => deserialize<_i7.Note>(e)).toList()
+          : null) as dynamic;
+    }
+    if (t == List<_i8.Note>) {
+      return (data as List).map((e) => deserialize<_i8.Note>(e)).toList()
           as dynamic;
     }
     try {

@@ -5,3 +5,4 @@ fields:
   content: String
   created: DateTime
   updated: DateTime
+  userId: int?, relation(name=user_notes, parent=tb_user)

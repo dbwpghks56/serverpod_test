@@ -9,6 +9,7 @@
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
 import 'package:serverpod_client/serverpod_client.dart' as _i1;
+import 'protocol.dart' as _i2;
 
 abstract class Note implements _i1.SerializableModel {
   Note._({
@@ -17,6 +18,8 @@ abstract class Note implements _i1.SerializableModel {
     required this.content,
     required this.created,
     required this.updated,
+    required this.userId,
+    this.user,
   });
 
   factory Note({
@@ -25,6 +28,8 @@ abstract class Note implements _i1.SerializableModel {
     required String content,
     required DateTime created,
     required DateTime updated,
+    required int userId,
+    _i2.User? user,
   }) = _NoteImpl;
 
   factory Note.fromJson(Map<String, dynamic> jsonSerialization) {
@@ -34,6 +39,11 @@ abstract class Note implements _i1.SerializableModel {
       content: jsonSerialization['content'] as String,
       created: _i1.DateTimeJsonExtension.fromJson(jsonSerialization['created']),
       updated: _i1.DateTimeJsonExtension.fromJson(jsonSerialization['updated']),
+      userId: jsonSerialization['userId'] as int,
+      user: jsonSerialization['user'] == null
+          ? null
+          : _i2.User.fromJson(
+              (jsonSerialization['user'] as Map<String, dynamic>)),
     );
   }
 
@@ -50,12 +60,18 @@ abstract class Note implements _i1.SerializableModel {
 
   DateTime updated;
 
+  int userId;
+
+  _i2.User? user;
+
   Note copyWith({
     int? id,
     String? title,
     String? content,
     DateTime? created,
     DateTime? updated,
+    int? userId,
+    _i2.User? user,
   });
   @override
   Map<String, dynamic> toJson() {
@@ -65,6 +81,8 @@ abstract class Note implements _i1.SerializableModel {
       'content': content,
       'created': created.toJson(),
       'updated': updated.toJson(),
+      'userId': userId,
+      if (user != null) 'user': user?.toJson(),
     };
   }
 
@@ -83,12 +101,16 @@ class _NoteImpl extends Note {
     required String content,
     required DateTime created,
     required DateTime updated,
+    required int userId,
+    _i2.User? user,
   }) : super._(
           id: id,
           title: title,
           content: content,
           created: created,
           updated: updated,
+          userId: userId,
+          user: user,
         );
 
   @override
@@ -98,6 +120,8 @@ class _NoteImpl extends Note {
     String? content,
     DateTime? created,
     DateTime? updated,
+    int? userId,
+    Object? user = _Undefined,
   }) {
     return Note(
       id: id is int? ? id : this.id,
@@ -105,6 +129,8 @@ class _NoteImpl extends Note {
       content: content ?? this.content,
       created: created ?? this.created,
       updated: updated ?? this.updated,
+      userId: userId ?? this.userId,
+      user: user is _i2.User? ? user : this.user?.copyWith(),
     );
   }
 }

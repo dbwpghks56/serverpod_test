@@ -10,18 +10,22 @@
 // ignore_for_file: no_leading_underscores_for_library_prefixes
 import 'package:serverpod/serverpod.dart' as _i1;
 import 'package:serverpod_auth_server/serverpod_auth_server.dart' as _i2;
+import 'protocol.dart' as _i3;
+import 'package:serverpod_serialization/serverpod_serialization.dart';
 
 abstract class User extends _i1.TableRow implements _i1.ProtocolSerialization {
   User._({
     int? id,
     required this.userInfoId,
     this.userInfo,
+    this.notes,
   }) : super(id);
 
   factory User({
     int? id,
     required int userInfoId,
     _i2.UserInfo? userInfo,
+    List<_i3.Note>? notes,
   }) = _UserImpl;
 
   factory User.fromJson(Map<String, dynamic> jsonSerialization) {
@@ -32,6 +36,9 @@ abstract class User extends _i1.TableRow implements _i1.ProtocolSerialization {
           ? null
           : _i2.UserInfo.fromJson(
               (jsonSerialization['userInfo'] as Map<String, dynamic>)),
+      notes: (jsonSerialization['notes'] as List?)
+          ?.map((e) => _i3.Note.fromJson((e as Map<String, dynamic>)))
+          .toList(),
     );
   }
 
@@ -43,6 +50,8 @@ abstract class User extends _i1.TableRow implements _i1.ProtocolSerialization {
 
   _i2.UserInfo? userInfo;
 
+  List<_i3.Note>? notes;
+
   @override
   _i1.Table get table => t;
 
@@ -50,6 +59,7 @@ abstract class User extends _i1.TableRow implements _i1.ProtocolSerialization {
     int? id,
     int? userInfoId,
     _i2.UserInfo? userInfo,
+    List<_i3.Note>? notes,
   });
   @override
   Map<String, dynamic> toJson() {
@@ -57,6 +67,7 @@ abstract class User extends _i1.TableRow implements _i1.ProtocolSerialization {
       if (id != null) 'id': id,
       'userInfoId': userInfoId,
       if (userInfo != null) 'userInfo': userInfo?.toJson(),
+      if (notes != null) 'notes': notes?.toJson(valueToJson: (v) => v.toJson()),
     };
   }
 
@@ -66,11 +77,19 @@ abstract class User extends _i1.TableRow implements _i1.ProtocolSerialization {
       if (id != null) 'id': id,
       'userInfoId': userInfoId,
       if (userInfo != null) 'userInfo': userInfo?.toJsonForProtocol(),
+      if (notes != null)
+        'notes': notes?.toJson(valueToJson: (v) => v.toJsonForProtocol()),
     };
   }
 
-  static UserInclude include({_i2.UserInfoInclude? userInfo}) {
-    return UserInclude._(userInfo: userInfo);
+  static UserInclude include({
+    _i2.UserInfoInclude? userInfo,
+    _i3.NoteIncludeList? notes,
+  }) {
+    return UserInclude._(
+      userInfo: userInfo,
+      notes: notes,
+    );
   }
 
   static UserIncludeList includeList({
@@ -106,10 +125,12 @@ class _UserImpl extends User {
     int? id,
     required int userInfoId,
     _i2.UserInfo? userInfo,
+    List<_i3.Note>? notes,
   }) : super._(
           id: id,
           userInfoId: userInfoId,
           userInfo: userInfo,
+          notes: notes,
         );
 
   @override
@@ -117,12 +138,14 @@ class _UserImpl extends User {
     Object? id = _Undefined,
     int? userInfoId,
     Object? userInfo = _Undefined,
+    Object? notes = _Undefined,
   }) {
     return User(
       id: id is int? ? id : this.id,
       userInfoId: userInfoId ?? this.userInfoId,
       userInfo:
           userInfo is _i2.UserInfo? ? userInfo : this.userInfo?.copyWith(),
+      notes: notes is List<_i3.Note>? ? notes : this.notes?.clone(),
     );
   }
 }
@@ -139,6 +162,10 @@ class UserTable extends _i1.Table {
 
   _i2.UserInfoTable? _userInfo;
 
+  _i3.NoteTable? ___notes;
+
+  _i1.ManyRelation<_i3.NoteTable>? _notes;
+
   _i2.UserInfoTable get userInfo {
     if (_userInfo != null) return _userInfo!;
     _userInfo = _i1.createRelationTable(
@@ -152,6 +179,37 @@ class UserTable extends _i1.Table {
     return _userInfo!;
   }
 
+  _i3.NoteTable get __notes {
+    if (___notes != null) return ___notes!;
+    ___notes = _i1.createRelationTable(
+      relationFieldName: '__notes',
+      field: User.t.id,
+      foreignField: _i3.Note.t.$_tbUserNotesTbUserId,
+      tableRelation: tableRelation,
+      createTable: (foreignTableRelation) =>
+          _i3.NoteTable(tableRelation: foreignTableRelation),
+    );
+    return ___notes!;
+  }
+
+  _i1.ManyRelation<_i3.NoteTable> get notes {
+    if (_notes != null) return _notes!;
+    var relationTable = _i1.createRelationTable(
+      relationFieldName: 'notes',
+      field: User.t.id,
+      foreignField: _i3.Note.t.$_tbUserNotesTbUserId,
+      tableRelation: tableRelation,
+      createTable: (foreignTableRelation) =>
+          _i3.NoteTable(tableRelation: foreignTableRelation),
+    );
+    _notes = _i1.ManyRelation<_i3.NoteTable>(
+      tableWithRelations: relationTable,
+      table: _i3.NoteTable(
+          tableRelation: relationTable.tableRelation!.lastRelation),
+    );
+    return _notes!;
+  }
+
   @override
   List<_i1.Column> get columns => [
         id,
@@ -163,19 +221,31 @@ class UserTable extends _i1.Table {
     if (relationField == 'userInfo') {
       return userInfo;
     }
+    if (relationField == 'notes') {
+      return __notes;
+    }
     return null;
   }
 }
 
 class UserInclude extends _i1.IncludeObject {
-  UserInclude._({_i2.UserInfoInclude? userInfo}) {
+  UserInclude._({
+    _i2.UserInfoInclude? userInfo,
+    _i3.NoteIncludeList? notes,
+  }) {
     _userInfo = userInfo;
+    _notes = notes;
   }
 
   _i2.UserInfoInclude? _userInfo;
 
+  _i3.NoteIncludeList? _notes;
+
   @override
-  Map<String, _i1.Include?> get includes => {'userInfo': _userInfo};
+  Map<String, _i1.Include?> get includes => {
+        'userInfo': _userInfo,
+        'notes': _notes,
+      };
 
   @override
   _i1.Table get table => User.t;
@@ -204,7 +274,13 @@ class UserIncludeList extends _i1.IncludeList {
 class UserRepository {
   const UserRepository._();
 
+  final attach = const UserAttachRepository._();
+
   final attachRow = const UserAttachRowRepository._();
+
+  final detach = const UserDetachRepository._();
+
+  final detachRow = const UserDetachRowRepository._();
 
   Future<List<User>> find(
     _i1.Session session, {
@@ -358,6 +434,34 @@ class UserRepository {
   }
 }
 
+class UserAttachRepository {
+  const UserAttachRepository._();
+
+  Future<void> notes(
+    _i1.Session session,
+    User user,
+    List<_i3.Note> note,
+  ) async {
+    if (note.any((e) => e.id == null)) {
+      throw ArgumentError.notNull('note.id');
+    }
+    if (user.id == null) {
+      throw ArgumentError.notNull('user.id');
+    }
+
+    var $note = note
+        .map((e) => _i3.NoteImplicit(
+              e,
+              $_tbUserNotesTbUserId: user.id,
+            ))
+        .toList();
+    await session.db.update<_i3.Note>(
+      $note,
+      columns: [_i3.Note.t.$_tbUserNotesTbUserId],
+    );
+  }
+}
+
 class UserAttachRowRepository {
   const UserAttachRowRepository._();
 
@@ -377,6 +481,74 @@ class UserAttachRowRepository {
     await session.db.updateRow<User>(
       $user,
       columns: [User.t.userInfoId],
+    );
+  }
+
+  Future<void> notes(
+    _i1.Session session,
+    User user,
+    _i3.Note note,
+  ) async {
+    if (note.id == null) {
+      throw ArgumentError.notNull('note.id');
+    }
+    if (user.id == null) {
+      throw ArgumentError.notNull('user.id');
+    }
+
+    var $note = _i3.NoteImplicit(
+      note,
+      $_tbUserNotesTbUserId: user.id,
+    );
+    await session.db.updateRow<_i3.Note>(
+      $note,
+      columns: [_i3.Note.t.$_tbUserNotesTbUserId],
+    );
+  }
+}
+
+class UserDetachRepository {
+  const UserDetachRepository._();
+
+  Future<void> notes(
+    _i1.Session session,
+    List<_i3.Note> note,
+  ) async {
+    if (note.any((e) => e.id == null)) {
+      throw ArgumentError.notNull('note.id');
+    }
+
+    var $note = note
+        .map((e) => _i3.NoteImplicit(
+              e,
+              $_tbUserNotesTbUserId: null,
+            ))
+        .toList();
+    await session.db.update<_i3.Note>(
+      $note,
+      columns: [_i3.Note.t.$_tbUserNotesTbUserId],
+    );
+  }
+}
+
+class UserDetachRowRepository {
+  const UserDetachRowRepository._();
+
+  Future<void> notes(
+    _i1.Session session,
+    _i3.Note note,
+  ) async {
+    if (note.id == null) {
+      throw ArgumentError.notNull('note.id');
+    }
+
+    var $note = _i3.NoteImplicit(
+      note,
+      $_tbUserNotesTbUserId: null,
+    );
+    await session.db.updateRow<_i3.Note>(
+      $note,
+      columns: [_i3.Note.t.$_tbUserNotesTbUserId],
     );
   }
 }

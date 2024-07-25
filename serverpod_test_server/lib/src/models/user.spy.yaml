@@ -2,6 +2,7 @@ class: User
 table: tb_user
 fields:
   userInfo: module:auth:UserInfo?, relation
+  notes: List<Note>?, relation(name=user_notes)
 indexes:
   user_info_id_unique_idx:
     fields: userInfoId
