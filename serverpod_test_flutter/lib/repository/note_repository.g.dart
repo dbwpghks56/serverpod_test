@@ -7,24 +7,7 @@ part of 'note_repository.dart';
 // **************************************************************************
 
 String _$getAllNoteRepositoryHash() =>
-    r'30fb0167684345b20a398f669e2f1af6136c3c05';
-
-/// See also [getAllNoteRepository].
-@ProviderFor(getAllNoteRepository)
-final getAllNoteRepositoryProvider =
-    AutoDisposeFutureProvider<List<Note>>.internal(
-  getAllNoteRepository,
-  name: r'getAllNoteRepositoryProvider',
-  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
-      ? null
-      : _$getAllNoteRepositoryHash,
-  dependencies: null,
-  allTransitiveDependencies: null,
-);
-
-typedef GetAllNoteRepositoryRef = AutoDisposeFutureProviderRef<List<Note>>;
-String _$createNoteRepositoryHash() =>
-    r'0d7178cec044d2813637be8cad98e41a0c098e3d';
+    r'126828f31e34972b70d3d8ee038b28f30e8afa38';
 
 /// Copied from Dart SDK
 class _SystemHash {
@@ -46,6 +29,137 @@ class _SystemHash {
     return 0x1fffffff & (hash + ((0x00003fff & hash) << 15));
   }
 }
+
+/// See also [getAllNoteRepository].
+@ProviderFor(getAllNoteRepository)
+const getAllNoteRepositoryProvider = GetAllNoteRepositoryFamily();
+
+/// See also [getAllNoteRepository].
+class GetAllNoteRepositoryFamily extends Family<AsyncValue<List<Note>>> {
+  /// See also [getAllNoteRepository].
+  const GetAllNoteRepositoryFamily();
+
+  /// See also [getAllNoteRepository].
+  GetAllNoteRepositoryProvider call(
+    int userId,
+  ) {
+    return GetAllNoteRepositoryProvider(
+      userId,
+    );
+  }
+
+  @override
+  GetAllNoteRepositoryProvider getProviderOverride(
+    covariant GetAllNoteRepositoryProvider provider,
+  ) {
+    return call(
+      provider.userId,
+    );
+  }
+
+  static const Iterable<ProviderOrFamily>? _dependencies = null;
+
+  @override
+  Iterable<ProviderOrFamily>? get dependencies => _dependencies;
+
+  static const Iterable<ProviderOrFamily>? _allTransitiveDependencies = null;
+
+  @override
+  Iterable<ProviderOrFamily>? get allTransitiveDependencies =>
+      _allTransitiveDependencies;
+
+  @override
+  String? get name => r'getAllNoteRepositoryProvider';
+}
+
+/// See also [getAllNoteRepository].
+class GetAllNoteRepositoryProvider
+    extends AutoDisposeFutureProvider<List<Note>> {
+  /// See also [getAllNoteRepository].
+  GetAllNoteRepositoryProvider(
+    int userId,
+  ) : this._internal(
+          (ref) => getAllNoteRepository(
+            ref as GetAllNoteRepositoryRef,
+            userId,
+          ),
+          from: getAllNoteRepositoryProvider,
+          name: r'getAllNoteRepositoryProvider',
+          debugGetCreateSourceHash:
+              const bool.fromEnvironment('dart.vm.product')
+                  ? null
+                  : _$getAllNoteRepositoryHash,
+          dependencies: GetAllNoteRepositoryFamily._dependencies,
+          allTransitiveDependencies:
+              GetAllNoteRepositoryFamily._allTransitiveDependencies,
+          userId: userId,
+        );
+
+  GetAllNoteRepositoryProvider._internal(
+    super._createNotifier, {
+    required super.name,
+    required super.dependencies,
+    required super.allTransitiveDependencies,
+    required super.debugGetCreateSourceHash,
+    required super.from,
+    required this.userId,
+  }) : super.internal();
+
+  final int userId;
+
+  @override
+  Override overrideWith(
+    FutureOr<List<Note>> Function(GetAllNoteRepositoryRef provider) create,
+  ) {
+    return ProviderOverride(
+      origin: this,
+      override: GetAllNoteRepositoryProvider._internal(
+        (ref) => create(ref as GetAllNoteRepositoryRef),
+        from: from,
+        name: null,
+        dependencies: null,
+        allTransitiveDependencies: null,
+        debugGetCreateSourceHash: null,
+        userId: userId,
+      ),
+    );
+  }
+
+  @override
+  AutoDisposeFutureProviderElement<List<Note>> createElement() {
+    return _GetAllNoteRepositoryProviderElement(this);
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return other is GetAllNoteRepositoryProvider && other.userId == userId;
+  }
+
+  @override
+  int get hashCode {
+    var hash = _SystemHash.combine(0, runtimeType.hashCode);
+    hash = _SystemHash.combine(hash, userId.hashCode);
+
+    return _SystemHash.finish(hash);
+  }
+}
+
+mixin GetAllNoteRepositoryRef on AutoDisposeFutureProviderRef<List<Note>> {
+  /// The parameter `userId` of this provider.
+  int get userId;
+}
+
+class _GetAllNoteRepositoryProviderElement
+    extends AutoDisposeFutureProviderElement<List<Note>>
+    with GetAllNoteRepositoryRef {
+  _GetAllNoteRepositoryProviderElement(super.provider);
+
+  @override
+  int get userId => (origin as GetAllNoteRepositoryProvider).userId;
+}
+
+String _$createNoteRepositoryHash() =>
+    r'0d7178cec044d2813637be8cad98e41a0c098e3d';
 
 /// See also [createNoteRepository].
 @ProviderFor(createNoteRepository)
