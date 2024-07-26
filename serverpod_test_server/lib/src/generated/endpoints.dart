@@ -113,6 +113,24 @@ class Endpoints extends _i1.EndpointDispatch {
             params['userId'],
           ),
         ),
+        'getNoteById': _i1.MethodConnector(
+          name: 'getNoteById',
+          params: {
+            'noteId': _i1.ParameterDescription(
+              name: 'noteId',
+              type: _i1.getType<int>(),
+              nullable: false,
+            )
+          },
+          call: (
+            _i1.Session session,
+            Map<String, dynamic> params,
+          ) async =>
+              (endpoints['note'] as _i3.NoteEndpoint).getNoteById(
+            session,
+            params['noteId'],
+          ),
+        ),
       },
     );
     modules['serverpod_auth'] = _i5.Endpoints()..initializeEndpoints(server);

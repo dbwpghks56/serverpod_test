@@ -22,6 +22,7 @@ class NoteList extends HookConsumerWidget {
         return ListTile(
             title: Text(notes[index].title),
             subtitle: Text(notes[index].content),
+            onTap: () {},
             trailing: IconButton(
               color: Colors.red[200],
               icon: const Icon(Icons.delete),

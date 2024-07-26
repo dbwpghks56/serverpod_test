@@ -53,6 +53,13 @@ class EndpointNote extends _i1.EndpointRef {
         'getAllNotes',
         {'userId': userId},
       );
+
+  _i2.Future<_i3.Note?> getNoteById(int noteId) =>
+      caller.callServerEndpoint<_i3.Note?>(
+        'note',
+        'getNoteById',
+        {'noteId': noteId},
+      );
 }
 
 class _Modules {

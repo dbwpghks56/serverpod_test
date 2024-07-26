@@ -18,4 +18,11 @@ class NoteEndpoint extends Endpoint {
       orderBy: (note) => note.created,
     );
   }
+
+  Future<Note?> getNoteById(Session session, int noteId) async {
+    return await Note.db.findById(
+      session,
+      noteId,
+    );
+  }
 }
