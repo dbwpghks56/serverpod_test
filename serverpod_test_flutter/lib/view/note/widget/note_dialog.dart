@@ -3,6 +3,7 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:serverpod_test_client/serverpod_test_client.dart';
 import 'package:serverpod_test_flutter/repository/note_repository.dart';
+import 'package:serverpod_test_flutter/serverpod_client.dart';
 
 class NoteDialog extends HookConsumerWidget {
   const NoteDialog({super.key});
@@ -39,6 +40,7 @@ class NoteDialog extends HookConsumerWidget {
                     content: contentInputController.text,
                     created: DateTime.now(),
                     updated: DateTime.now(),
+                    userId: sessionManager.signedInUser!.id!,
                   ),
                 ));
                 Navigator.of(context).pop();

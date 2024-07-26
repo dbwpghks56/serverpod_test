@@ -8,9 +8,10 @@ part 'note_repository.g.dart';
 @riverpod
 Future<List<Note>> getAllNoteRepository(
   GetAllNoteRepositoryRef ref,
+  int userId,
 ) async {
   final noteList = <Note>[];
-  final noteCollection = await client.note.getAllNotes();
+  final noteCollection = await client.note.getAllNotes(userId);
   final noteRiverpod = ref.read(noteServiceProvider.notifier);
 
   for (final note in noteCollection) {

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:serverpod_test_flutter/repository/note_repository.dart';
+import 'package:serverpod_test_flutter/serverpod_client.dart';
 import 'package:serverpod_test_flutter/service/note_service.dart';
 
 class NoteList extends HookConsumerWidget {
@@ -11,7 +12,7 @@ class NoteList extends HookConsumerWidget {
     final notes = ref.watch(noteServiceProvider);
 
     useEffect(() {
-      ref.watch(getAllNoteRepositoryProvider);
+      ref.watch(getAllNoteRepositoryProvider(sessionManager.signedInUser!.id!));
       return null;
     }, []);
 

@@ -47,11 +47,11 @@ class EndpointNote extends _i1.EndpointRef {
         {'note': note},
       );
 
-  _i2.Future<List<_i3.Note>> getAllNotes() =>
+  _i2.Future<List<_i3.Note>> getAllNotes(int userId) =>
       caller.callServerEndpoint<List<_i3.Note>>(
         'note',
         'getAllNotes',
-        {},
+        {'userId': userId},
       );
 }
 

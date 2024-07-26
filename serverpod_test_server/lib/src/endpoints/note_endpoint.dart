@@ -11,9 +11,10 @@ class NoteEndpoint extends Endpoint {
     await Note.db.deleteRow(session, note);
   }
 
-  Future<List<Note>> getAllNotes(Session session) async {
+  Future<List<Note>> getAllNotes(Session session, int userId) async {
     return await Note.db.find(
       session,
+      where: (note) => note.userId.equals(userId),
       orderBy: (note) => note.created,
     );
   }
