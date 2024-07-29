@@ -9,9 +9,15 @@ part 'note_repository.g.dart';
 Future<List<Note>> getAllNoteRepository(
   GetAllNoteRepositoryRef ref,
   int userId,
+  int perPage,
+  int page,
 ) async {
   final noteList = <Note>[];
-  final noteCollection = await client.note.getAllNotes(userId);
+  final noteCollection = await client.note.getAllNotes(
+    userId,
+    perPage,
+    page,
+  );
   final noteRiverpod = ref.read(noteServiceProvider.notifier);
 
   for (final note in noteCollection) {

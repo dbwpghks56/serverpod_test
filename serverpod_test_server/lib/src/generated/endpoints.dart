@@ -102,7 +102,17 @@ class Endpoints extends _i1.EndpointDispatch {
               name: 'userId',
               type: _i1.getType<int>(),
               nullable: false,
-            )
+            ),
+            'perPage': _i1.ParameterDescription(
+              name: 'perPage',
+              type: _i1.getType<int>(),
+              nullable: false,
+            ),
+            'page': _i1.ParameterDescription(
+              name: 'page',
+              type: _i1.getType<int>(),
+              nullable: false,
+            ),
           },
           call: (
             _i1.Session session,
@@ -111,6 +121,8 @@ class Endpoints extends _i1.EndpointDispatch {
               (endpoints['note'] as _i3.NoteEndpoint).getAllNotes(
             session,
             params['userId'],
+            params['perPage'],
+            params['page'],
           ),
         ),
         'getNoteById': _i1.MethodConnector(

@@ -7,7 +7,7 @@ part of 'note_repository.dart';
 // **************************************************************************
 
 String _$getAllNoteRepositoryHash() =>
-    r'126828f31e34972b70d3d8ee038b28f30e8afa38';
+    r'25b7db6501ae778001e61ccd1d651050aa71b720';
 
 /// Copied from Dart SDK
 class _SystemHash {
@@ -42,9 +42,13 @@ class GetAllNoteRepositoryFamily extends Family<AsyncValue<List<Note>>> {
   /// See also [getAllNoteRepository].
   GetAllNoteRepositoryProvider call(
     int userId,
+    int perPage,
+    int page,
   ) {
     return GetAllNoteRepositoryProvider(
       userId,
+      perPage,
+      page,
     );
   }
 
@@ -54,6 +58,8 @@ class GetAllNoteRepositoryFamily extends Family<AsyncValue<List<Note>>> {
   ) {
     return call(
       provider.userId,
+      provider.perPage,
+      provider.page,
     );
   }
 
@@ -78,10 +84,14 @@ class GetAllNoteRepositoryProvider
   /// See also [getAllNoteRepository].
   GetAllNoteRepositoryProvider(
     int userId,
+    int perPage,
+    int page,
   ) : this._internal(
           (ref) => getAllNoteRepository(
             ref as GetAllNoteRepositoryRef,
             userId,
+            perPage,
+            page,
           ),
           from: getAllNoteRepositoryProvider,
           name: r'getAllNoteRepositoryProvider',
@@ -93,6 +103,8 @@ class GetAllNoteRepositoryProvider
           allTransitiveDependencies:
               GetAllNoteRepositoryFamily._allTransitiveDependencies,
           userId: userId,
+          perPage: perPage,
+          page: page,
         );
 
   GetAllNoteRepositoryProvider._internal(
@@ -103,9 +115,13 @@ class GetAllNoteRepositoryProvider
     required super.debugGetCreateSourceHash,
     required super.from,
     required this.userId,
+    required this.perPage,
+    required this.page,
   }) : super.internal();
 
   final int userId;
+  final int perPage;
+  final int page;
 
   @override
   Override overrideWith(
@@ -121,6 +137,8 @@ class GetAllNoteRepositoryProvider
         allTransitiveDependencies: null,
         debugGetCreateSourceHash: null,
         userId: userId,
+        perPage: perPage,
+        page: page,
       ),
     );
   }
@@ -132,13 +150,18 @@ class GetAllNoteRepositoryProvider
 
   @override
   bool operator ==(Object other) {
-    return other is GetAllNoteRepositoryProvider && other.userId == userId;
+    return other is GetAllNoteRepositoryProvider &&
+        other.userId == userId &&
+        other.perPage == perPage &&
+        other.page == page;
   }
 
   @override
   int get hashCode {
     var hash = _SystemHash.combine(0, runtimeType.hashCode);
     hash = _SystemHash.combine(hash, userId.hashCode);
+    hash = _SystemHash.combine(hash, perPage.hashCode);
+    hash = _SystemHash.combine(hash, page.hashCode);
 
     return _SystemHash.finish(hash);
   }
@@ -147,6 +170,12 @@ class GetAllNoteRepositoryProvider
 mixin GetAllNoteRepositoryRef on AutoDisposeFutureProviderRef<List<Note>> {
   /// The parameter `userId` of this provider.
   int get userId;
+
+  /// The parameter `perPage` of this provider.
+  int get perPage;
+
+  /// The parameter `page` of this provider.
+  int get page;
 }
 
 class _GetAllNoteRepositoryProviderElement
@@ -156,6 +185,10 @@ class _GetAllNoteRepositoryProviderElement
 
   @override
   int get userId => (origin as GetAllNoteRepositoryProvider).userId;
+  @override
+  int get perPage => (origin as GetAllNoteRepositoryProvider).perPage;
+  @override
+  int get page => (origin as GetAllNoteRepositoryProvider).page;
 }
 
 String _$createNoteRepositoryHash() =>

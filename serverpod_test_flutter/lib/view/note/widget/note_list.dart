@@ -12,7 +12,11 @@ class NoteList extends HookConsumerWidget {
     final notes = ref.watch(noteServiceProvider);
 
     useEffect(() {
-      ref.watch(getAllNoteRepositoryProvider(sessionManager.signedInUser!.id!));
+      ref.watch(getAllNoteRepositoryProvider(
+        sessionManager.signedInUser!.id!,
+        10,
+        1,
+      ));
       return null;
     }, []);
 
