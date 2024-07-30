@@ -3,6 +3,9 @@ import 'package:serverpod/server.dart';
 import '../generated/protocol.dart';
 
 class NoteEndpoint extends Endpoint {
+  @override
+  bool get requireLogin => true;
+
   Future<void> createNote(Session session, Note note) async {
     await Note.db.insertRow(session, note);
   }
