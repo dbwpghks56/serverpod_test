@@ -9,6 +9,7 @@
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
 import 'package:serverpod/serverpod.dart' as _i1;
+import 'protocol.dart' as _i2;
 import 'package:serverpod_serialization/serverpod_serialization.dart';
 
 abstract class Note extends _i1.TableRow implements _i1.ProtocolSerialization {
@@ -18,7 +19,8 @@ abstract class Note extends _i1.TableRow implements _i1.ProtocolSerialization {
     required this.content,
     required this.created,
     required this.updated,
-    this.userId,
+    required this.userId,
+    this.user,
   }) : super(id);
 
   factory Note({
@@ -27,7 +29,8 @@ abstract class Note extends _i1.TableRow implements _i1.ProtocolSerialization {
     required String content,
     required DateTime created,
     required DateTime updated,
-    int? userId,
+    required int userId,
+    _i2.User? user,
   }) = _NoteImpl;
 
   factory Note.fromJson(Map<String, dynamic> jsonSerialization) {
@@ -37,7 +40,11 @@ abstract class Note extends _i1.TableRow implements _i1.ProtocolSerialization {
       content: jsonSerialization['content'] as String,
       created: _i1.DateTimeJsonExtension.fromJson(jsonSerialization['created']),
       updated: _i1.DateTimeJsonExtension.fromJson(jsonSerialization['updated']),
-      userId: jsonSerialization['userId'] as int?,
+      userId: jsonSerialization['userId'] as int,
+      user: jsonSerialization['user'] == null
+          ? null
+          : _i2.User.fromJson(
+              (jsonSerialization['user'] as Map<String, dynamic>)),
     );
   }
 
@@ -53,7 +60,9 @@ abstract class Note extends _i1.TableRow implements _i1.ProtocolSerialization {
 
   DateTime updated;
 
-  int? userId;
+  int userId;
+
+  _i2.User? user;
 
   @override
   _i1.Table get table => t;
@@ -65,6 +74,7 @@ abstract class Note extends _i1.TableRow implements _i1.ProtocolSerialization {
     DateTime? created,
     DateTime? updated,
     int? userId,
+    _i2.User? user,
   });
   @override
   Map<String, dynamic> toJson() {
@@ -74,7 +84,8 @@ abstract class Note extends _i1.TableRow implements _i1.ProtocolSerialization {
       'content': content,
       'created': created.toJson(),
       'updated': updated.toJson(),
-      if (userId != null) 'userId': userId,
+      'userId': userId,
+      if (user != null) 'user': user?.toJson(),
     };
   }
 
@@ -86,12 +97,13 @@ abstract class Note extends _i1.TableRow implements _i1.ProtocolSerialization {
       'content': content,
       'created': created.toJson(),
       'updated': updated.toJson(),
-      if (userId != null) 'userId': userId,
+      'userId': userId,
+      if (user != null) 'user': user?.toJsonForProtocol(),
     };
   }
 
-  static NoteInclude include() {
-    return NoteInclude._();
+  static NoteInclude include({_i2.UserInclude? user}) {
+    return NoteInclude._(user: user);
   }
 
   static NoteIncludeList includeList({
@@ -129,7 +141,8 @@ class _NoteImpl extends Note {
     required String content,
     required DateTime created,
     required DateTime updated,
-    int? userId,
+    required int userId,
+    _i2.User? user,
   }) : super._(
           id: id,
           title: title,
@@ -137,6 +150,7 @@ class _NoteImpl extends Note {
           created: created,
           updated: updated,
           userId: userId,
+          user: user,
         );
 
   @override
@@ -146,7 +160,8 @@ class _NoteImpl extends Note {
     String? content,
     DateTime? created,
     DateTime? updated,
-    Object? userId = _Undefined,
+    int? userId,
+    Object? user = _Undefined,
   }) {
     return Note(
       id: id is int? ? id : this.id,
@@ -154,7 +169,8 @@ class _NoteImpl extends Note {
       content: content ?? this.content,
       created: created ?? this.created,
       updated: updated ?? this.updated,
-      userId: userId is int? ? userId : this.userId,
+      userId: userId ?? this.userId,
+      user: user is _i2.User? ? user : this.user?.copyWith(),
     );
   }
 }
@@ -193,6 +209,21 @@ class NoteTable extends _i1.Table {
 
   late final _i1.ColumnInt userId;
 
+  _i2.UserTable? _user;
+
+  _i2.UserTable get user {
+    if (_user != null) return _user!;
+    _user = _i1.createRelationTable(
+      relationFieldName: 'user',
+      field: Note.t.userId,
+      foreignField: _i2.User.t.id,
+      tableRelation: tableRelation,
+      createTable: (foreignTableRelation) =>
+          _i2.UserTable(tableRelation: foreignTableRelation),
+    );
+    return _user!;
+  }
+
   @override
   List<_i1.Column> get columns => [
         id,
@@ -202,13 +233,25 @@ class NoteTable extends _i1.Table {
         updated,
         userId,
       ];
+
+  @override
+  _i1.Table? getRelationTable(String relationField) {
+    if (relationField == 'user') {
+      return user;
+    }
+    return null;
+  }
 }
 
 class NoteInclude extends _i1.IncludeObject {
-  NoteInclude._();
+  NoteInclude._({_i2.UserInclude? user}) {
+    _user = user;
+  }
+
+  _i2.UserInclude? _user;
 
   @override
-  Map<String, _i1.Include?> get includes => {};
+  Map<String, _i1.Include?> get includes => {'user': _user};
 
   @override
   _i1.Table get table => Note.t;
@@ -237,6 +280,8 @@ class NoteIncludeList extends _i1.IncludeList {
 class NoteRepository {
   const NoteRepository._();
 
+  final attachRow = const NoteAttachRowRepository._();
+
   Future<List<Note>> find(
     _i1.Session session, {
     _i1.WhereExpressionBuilder<NoteTable>? where,
@@ -246,6 +291,7 @@ class NoteRepository {
     bool orderDescending = false,
     _i1.OrderByListBuilder<NoteTable>? orderByList,
     _i1.Transaction? transaction,
+    NoteInclude? include,
   }) async {
     return session.db.find<Note>(
       where: where?.call(Note.t),
@@ -255,6 +301,7 @@ class NoteRepository {
       limit: limit,
       offset: offset,
       transaction: transaction,
+      include: include,
     );
   }
 
@@ -266,6 +313,7 @@ class NoteRepository {
     bool orderDescending = false,
     _i1.OrderByListBuilder<NoteTable>? orderByList,
     _i1.Transaction? transaction,
+    NoteInclude? include,
   }) async {
     return session.db.findFirstRow<Note>(
       where: where?.call(Note.t),
@@ -274,6 +322,7 @@ class NoteRepository {
       orderDescending: orderDescending,
       offset: offset,
       transaction: transaction,
+      include: include,
     );
   }
 
@@ -281,10 +330,12 @@ class NoteRepository {
     _i1.Session session,
     int id, {
     _i1.Transaction? transaction,
+    NoteInclude? include,
   }) async {
     return session.db.findById<Note>(
       id,
       transaction: transaction,
+      include: include,
     );
   }
 
@@ -379,6 +430,29 @@ class NoteRepository {
       where: where?.call(Note.t),
       limit: limit,
       transaction: transaction,
+    );
+  }
+}
+
+class NoteAttachRowRepository {
+  const NoteAttachRowRepository._();
+
+  Future<void> user(
+    _i1.Session session,
+    Note note,
+    _i2.User user,
+  ) async {
+    if (note.id == null) {
+      throw ArgumentError.notNull('note.id');
+    }
+    if (user.id == null) {
+      throw ArgumentError.notNull('user.id');
+    }
+
+    var $note = note.copyWith(userId: user.id);
+    await session.db.updateRow<Note>(
+      $note,
+      columns: [Note.t.userId],
     );
   }
 }

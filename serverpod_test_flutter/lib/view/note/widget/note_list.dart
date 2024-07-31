@@ -4,6 +4,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:serverpod_test_flutter/repository/note_repository.dart';
 import 'package:serverpod_test_flutter/serverpod_client.dart';
 import 'package:serverpod_test_flutter/service/note_service.dart';
+import 'package:serverpod_test_flutter/view/note/widget/note_detail_dialog.dart';
 
 class NoteList extends HookConsumerWidget {
   const NoteList({super.key});
@@ -26,7 +27,16 @@ class NoteList extends HookConsumerWidget {
         return ListTile(
             title: Text(notes[index].title),
             subtitle: Text(notes[index].content),
-            onTap: () {},
+            onTap: () async {
+              showDialog(
+                context: context,
+                builder: (context) {
+                  return NoteDetailDialog(
+                    noteId: notes[index].id!,
+                  );
+                },
+              );
+            },
             trailing: IconButton(
               color: Colors.red[200],
               icon: const Icon(Icons.delete),

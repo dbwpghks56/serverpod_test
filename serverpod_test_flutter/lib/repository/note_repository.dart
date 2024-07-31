@@ -42,6 +42,7 @@ Future<void> createNoteRepository(
   )
       .then(
     (value) {
+      note.id = value!.id;
       noteRiverpod.addNote(note);
     },
   );
@@ -62,5 +63,15 @@ Future<void> deleteNoteRepository(
     (value) {
       noteRiverpod.deleteNote(note);
     },
+  );
+}
+
+@riverpod
+Future<Note?> getNoteByIdRepository(
+  GetNoteByIdRepositoryRef ref,
+  int noteId,
+) async {
+  return await client.note.getNoteById(
+    noteId,
   );
 }

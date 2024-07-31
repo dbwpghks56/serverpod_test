@@ -6,8 +6,8 @@ class NoteEndpoint extends Endpoint {
   @override
   bool get requireLogin => true;
 
-  Future<void> createNote(Session session, Note note) async {
-    await Note.db.insertRow(session, note);
+  Future<Note?> createNote(Session session, Note note) async {
+    return await Note.db.insertRow(session, note);
   }
 
   Future<void> deleteNote(Session session, Note note) async {
@@ -36,6 +36,9 @@ class NoteEndpoint extends Endpoint {
     return await Note.db.findById(
       session,
       noteId,
+      include: Note.include(
+        user: User.include(),
+      ),
     );
   }
 }

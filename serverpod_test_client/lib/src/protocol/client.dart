@@ -35,7 +35,8 @@ class EndpointNote extends _i1.EndpointRef {
   @override
   String get name => 'note';
 
-  _i2.Future<void> createNote(_i3.Note note) => caller.callServerEndpoint<void>(
+  _i2.Future<_i3.Note?> createNote(_i3.Note note) =>
+      caller.callServerEndpoint<_i3.Note?>(
         'note',
         'createNote',
         {'note': note},
@@ -68,6 +69,14 @@ class EndpointNote extends _i1.EndpointRef {
         'getNoteById',
         {'noteId': noteId},
       );
+}
+
+/// {@category Endpoint}
+class EndpointUser extends _i1.EndpointRef {
+  EndpointUser(_i1.EndpointCaller caller) : super(caller);
+
+  @override
+  String get name => 'user';
 }
 
 class _Modules {
@@ -103,6 +112,7 @@ class Client extends _i1.ServerpodClient {
         ) {
     example = EndpointExample(this);
     note = EndpointNote(this);
+    user = EndpointUser(this);
     modules = _Modules(this);
   }
 
@@ -110,12 +120,15 @@ class Client extends _i1.ServerpodClient {
 
   late final EndpointNote note;
 
+  late final EndpointUser user;
+
   late final _Modules modules;
 
   @override
   Map<String, _i1.EndpointRef> get endpointRefLookup => {
         'example': example,
         'note': note,
+        'user': user,
       };
 
   @override

@@ -450,5 +450,135 @@ class _DeleteNoteRepositoryProviderElement
   @override
   Note get note => (origin as DeleteNoteRepositoryProvider).note;
 }
+
+String _$getNoteByIdRepositoryHash() =>
+    r'acc168953a71bb0a35adc9c75e9b27b7d2b9e3a4';
+
+/// See also [getNoteByIdRepository].
+@ProviderFor(getNoteByIdRepository)
+const getNoteByIdRepositoryProvider = GetNoteByIdRepositoryFamily();
+
+/// See also [getNoteByIdRepository].
+class GetNoteByIdRepositoryFamily extends Family<AsyncValue<Note?>> {
+  /// See also [getNoteByIdRepository].
+  const GetNoteByIdRepositoryFamily();
+
+  /// See also [getNoteByIdRepository].
+  GetNoteByIdRepositoryProvider call(
+    int noteId,
+  ) {
+    return GetNoteByIdRepositoryProvider(
+      noteId,
+    );
+  }
+
+  @override
+  GetNoteByIdRepositoryProvider getProviderOverride(
+    covariant GetNoteByIdRepositoryProvider provider,
+  ) {
+    return call(
+      provider.noteId,
+    );
+  }
+
+  static const Iterable<ProviderOrFamily>? _dependencies = null;
+
+  @override
+  Iterable<ProviderOrFamily>? get dependencies => _dependencies;
+
+  static const Iterable<ProviderOrFamily>? _allTransitiveDependencies = null;
+
+  @override
+  Iterable<ProviderOrFamily>? get allTransitiveDependencies =>
+      _allTransitiveDependencies;
+
+  @override
+  String? get name => r'getNoteByIdRepositoryProvider';
+}
+
+/// See also [getNoteByIdRepository].
+class GetNoteByIdRepositoryProvider extends AutoDisposeFutureProvider<Note?> {
+  /// See also [getNoteByIdRepository].
+  GetNoteByIdRepositoryProvider(
+    int noteId,
+  ) : this._internal(
+          (ref) => getNoteByIdRepository(
+            ref as GetNoteByIdRepositoryRef,
+            noteId,
+          ),
+          from: getNoteByIdRepositoryProvider,
+          name: r'getNoteByIdRepositoryProvider',
+          debugGetCreateSourceHash:
+              const bool.fromEnvironment('dart.vm.product')
+                  ? null
+                  : _$getNoteByIdRepositoryHash,
+          dependencies: GetNoteByIdRepositoryFamily._dependencies,
+          allTransitiveDependencies:
+              GetNoteByIdRepositoryFamily._allTransitiveDependencies,
+          noteId: noteId,
+        );
+
+  GetNoteByIdRepositoryProvider._internal(
+    super._createNotifier, {
+    required super.name,
+    required super.dependencies,
+    required super.allTransitiveDependencies,
+    required super.debugGetCreateSourceHash,
+    required super.from,
+    required this.noteId,
+  }) : super.internal();
+
+  final int noteId;
+
+  @override
+  Override overrideWith(
+    FutureOr<Note?> Function(GetNoteByIdRepositoryRef provider) create,
+  ) {
+    return ProviderOverride(
+      origin: this,
+      override: GetNoteByIdRepositoryProvider._internal(
+        (ref) => create(ref as GetNoteByIdRepositoryRef),
+        from: from,
+        name: null,
+        dependencies: null,
+        allTransitiveDependencies: null,
+        debugGetCreateSourceHash: null,
+        noteId: noteId,
+      ),
+    );
+  }
+
+  @override
+  AutoDisposeFutureProviderElement<Note?> createElement() {
+    return _GetNoteByIdRepositoryProviderElement(this);
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return other is GetNoteByIdRepositoryProvider && other.noteId == noteId;
+  }
+
+  @override
+  int get hashCode {
+    var hash = _SystemHash.combine(0, runtimeType.hashCode);
+    hash = _SystemHash.combine(hash, noteId.hashCode);
+
+    return _SystemHash.finish(hash);
+  }
+}
+
+mixin GetNoteByIdRepositoryRef on AutoDisposeFutureProviderRef<Note?> {
+  /// The parameter `noteId` of this provider.
+  int get noteId;
+}
+
+class _GetNoteByIdRepositoryProviderElement
+    extends AutoDisposeFutureProviderElement<Note?>
+    with GetNoteByIdRepositoryRef {
+  _GetNoteByIdRepositoryProviderElement(super.provider);
+
+  @override
+  int get noteId => (origin as GetNoteByIdRepositoryProvider).noteId;
+}
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member

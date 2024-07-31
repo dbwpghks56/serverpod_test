@@ -5,3 +5,4 @@ note:
   - deleteNote:
   - getAllNotes:
   - getNoteById:
+user:

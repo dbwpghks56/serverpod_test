@@ -278,10 +278,6 @@ class UserRepository {
 
   final attachRow = const UserAttachRowRepository._();
 
-  final detach = const UserDetachRepository._();
-
-  final detachRow = const UserDetachRowRepository._();
-
   Future<List<User>> find(
     _i1.Session session, {
     _i1.WhereExpressionBuilder<UserTable>? where,
@@ -492,44 +488,6 @@ class UserAttachRowRepository {
     }
 
     var $note = note.copyWith(userId: user.id);
-    await session.db.updateRow<_i3.Note>(
-      $note,
-      columns: [_i3.Note.t.userId],
-    );
-  }
-}
-
-class UserDetachRepository {
-  const UserDetachRepository._();
-
-  Future<void> notes(
-    _i1.Session session,
-    List<_i3.Note> note,
-  ) async {
-    if (note.any((e) => e.id == null)) {
-      throw ArgumentError.notNull('note.id');
-    }
-
-    var $note = note.map((e) => e.copyWith(userId: null)).toList();
-    await session.db.update<_i3.Note>(
-      $note,
-      columns: [_i3.Note.t.userId],
-    );
-  }
-}
-
-class UserDetachRowRepository {
-  const UserDetachRowRepository._();
-
-  Future<void> notes(
-    _i1.Session session,
-    _i3.Note note,
-  ) async {
-    if (note.id == null) {
-      throw ArgumentError.notNull('note.id');
-    }
-
-    var $note = note.copyWith(userId: null);
     await session.db.updateRow<_i3.Note>(
       $note,
       columns: [_i3.Note.t.userId],
