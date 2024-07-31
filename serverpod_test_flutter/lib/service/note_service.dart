@@ -14,6 +14,10 @@ class NoteService extends _$NoteService {
     state = [...state, note];
   }
 
+  void resetNode(List<Note> notes) {
+    state = notes;
+  }
+
   void deleteNote(Note note) {
     state = state.where((n) => n.id != note.id).toList();
   }

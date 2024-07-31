@@ -1,3 +1,4 @@
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -21,30 +22,49 @@ class NoteList extends HookConsumerWidget {
       return null;
     }, []);
 
-    return ListView.builder(
-      itemCount: notes.length,
-      itemBuilder: (context, index) {
-        return ListTile(
-            title: Text(notes[index].title),
-            subtitle: Text(notes[index].content),
-            onTap: () async {
-              showDialog(
-                context: context,
-                builder: (context) {
-                  return NoteDetailDialog(
-                    noteId: notes[index].id!,
+    return ScrollConfiguration(
+      behavior: ScrollConfiguration.of(context).copyWith(
+        physics: const BouncingScrollPhysics(),
+        dragDevices: {
+          PointerDeviceKind.touch,
+          PointerDeviceKind.mouse,
+        },
+      ),
+      child: RefreshIndicator(
+        onRefresh: () async {
+          ref.watch(getAllNoteRepositoryProvider(
+            sessionManager.signedInUser!.id!,
+            10,
+            1,
+          ));
+          return await Future.delayed(const Duration(seconds: 1));
+        },
+        child: ListView.builder(
+          itemCount: notes.length,
+          itemBuilder: (context, index) {
+            return ListTile(
+                title: Text(notes[index].title),
+                subtitle: Text(notes[index].content),
+                onTap: () async {
+                  showDialog(
+                    context: context,
+                    builder: (context) {
+                      return NoteDetailDialog(
+                        noteId: notes[index].id!,
+                      );
+                    },
                   );
                 },
-              );
-            },
-            trailing: IconButton(
-              color: Colors.red[200],
-              icon: const Icon(Icons.delete),
-              onPressed: () {
-                ref.read(deleteNoteRepositoryProvider(notes[index]));
-              },
-            ));
-      },
+                trailing: IconButton(
+                  color: Colors.red[200],
+                  icon: const Icon(Icons.delete),
+                  onPressed: () {
+                    ref.read(deleteNoteRepositoryProvider(notes[index]));
+                  },
+                ));
+          },
+        ),
+      ),
     );
   }
 }

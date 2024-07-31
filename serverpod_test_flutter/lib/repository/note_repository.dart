@@ -20,11 +20,7 @@ Future<List<Note>> getAllNoteRepository(
   );
   final noteRiverpod = ref.read(noteServiceProvider.notifier);
 
-  for (final note in noteCollection) {
-    note.id = note.id;
-    noteList.add(note);
-    noteRiverpod.addNote(note);
-  }
+  noteRiverpod.resetNode(noteCollection);
 
   return noteList;
 }
