@@ -30,7 +30,7 @@ class NoteDetailDialog extends HookConsumerWidget {
               children: [
                 Text(data.title),
                 Text(data.content),
-                Text(data.user!.userInfoId.toString()),
+                Text(data.user!.userInfo.toString()),
                 const SizedBox(height: 20),
                 ElevatedButton(
                   onPressed: () {

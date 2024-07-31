@@ -1,4 +1,5 @@
 import 'package:serverpod/server.dart';
+import 'package:serverpod_auth_server/serverpod_auth_server.dart';
 
 import '../generated/protocol.dart';
 
@@ -37,7 +38,9 @@ class NoteEndpoint extends Endpoint {
       session,
       noteId,
       include: Note.include(
-        user: User.include(),
+        user: User.include(
+          userInfo: UserInfo.include(),
+        ),
       ),
     );
   }
