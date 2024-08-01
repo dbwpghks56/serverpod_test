@@ -33,7 +33,9 @@ class NoteView extends HookConsumerWidget {
           ? NoteList(
               user: user,
             )
-          : const CircularProgressIndicator(),
+          : const Center(
+              child: CircularProgressIndicator(),
+            ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           showDialog(
