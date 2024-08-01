@@ -6,3 +6,4 @@ note:
   - getAllNotes:
   - getNoteById:
 user:
+  - getUser:

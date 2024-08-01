@@ -2,23 +2,27 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:serverpod_test_client/serverpod_test_client.dart';
 import 'package:serverpod_test_flutter/repository/note_repository.dart';
-import 'package:serverpod_test_flutter/serverpod_client.dart';
 import 'package:serverpod_test_flutter/service/note_service.dart';
 import 'package:serverpod_test_flutter/view/note/widget/note_detail_dialog.dart';
 
 class NoteList extends HookConsumerWidget {
-  const NoteList({super.key});
+  const NoteList({super.key, required this.user});
+
+  final User user;
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final notes = ref.watch(noteServiceProvider);
 
     useEffect(() {
       ref.watch(getAllNoteRepositoryProvider(
-        sessionManager.signedInUser!.id!,
+        user.id!,
         10,
         1,
       ));
+
       return null;
     }, []);
 
@@ -33,7 +37,7 @@ class NoteList extends HookConsumerWidget {
       child: RefreshIndicator(
         onRefresh: () async {
           ref.watch(getAllNoteRepositoryProvider(
-            sessionManager.signedInUser!.id!,
+            user.id!,
             10,
             1,
           ));

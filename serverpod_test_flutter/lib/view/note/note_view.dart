@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:serverpod_auth_shared_flutter/serverpod_auth_shared_flutter.dart';
 import 'package:serverpod_test_flutter/serverpod_client.dart';
+import 'package:serverpod_test_flutter/service/user_service.dart';
 import 'package:serverpod_test_flutter/view/note/widget/note_dialog.dart';
 import 'package:serverpod_test_flutter/view/note/widget/note_list.dart';
 
@@ -10,6 +11,8 @@ class NoteView extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final user = ref.watch(userServiceProvider);
+
     return Scaffold(
       appBar: AppBar(
         leading: CircularUserImage(
@@ -26,7 +29,11 @@ class NoteView extends HookConsumerWidget {
           ),
         ],
       ),
-      body: const NoteList(),
+      body: user.userInfoId != 0
+          ? NoteList(
+              user: user,
+            )
+          : const CircularProgressIndicator(),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           showDialog(

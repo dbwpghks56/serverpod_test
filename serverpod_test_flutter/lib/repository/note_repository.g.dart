@@ -7,7 +7,7 @@ part of 'note_repository.dart';
 // **************************************************************************
 
 String _$getAllNoteRepositoryHash() =>
-    r'25b7db6501ae778001e61ccd1d651050aa71b720';
+    r'91e9eae85fd019af72939d2cfae2be1d5804b025';
 
 /// Copied from Dart SDK
 class _SystemHash {
@@ -192,7 +192,7 @@ class _GetAllNoteRepositoryProviderElement
 }
 
 String _$createNoteRepositoryHash() =>
-    r'0d7178cec044d2813637be8cad98e41a0c098e3d';
+    r'f2bd89f1ae7b329ac1e9e7ec7a575e09266a0804';
 
 /// See also [createNoteRepository].
 @ProviderFor(createNoteRepository)

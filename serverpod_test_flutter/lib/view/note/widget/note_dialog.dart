@@ -3,7 +3,7 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:serverpod_test_client/serverpod_test_client.dart';
 import 'package:serverpod_test_flutter/repository/note_repository.dart';
-import 'package:serverpod_test_flutter/serverpod_client.dart';
+import 'package:serverpod_test_flutter/service/user_service.dart';
 
 class NoteDialog extends HookConsumerWidget {
   const NoteDialog({super.key});
@@ -11,6 +11,7 @@ class NoteDialog extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final titleInputController = useTextEditingController();
     final contentInputController = useTextEditingController();
+    final user = ref.watch(userServiceProvider);
 
     return Dialog(
       child: Container(
@@ -40,7 +41,7 @@ class NoteDialog extends HookConsumerWidget {
                     content: contentInputController.text,
                     created: DateTime.now(),
                     updated: DateTime.now(),
-                    userId: sessionManager.signedInUser!.id!,
+                    userId: user.id!,
                   ),
                 ));
                 Navigator.of(context).pop();
